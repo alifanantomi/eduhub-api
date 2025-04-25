@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { getPrisma } from '@/app/lib/prisma'
+import { bearer } from 'better-auth/plugins'
 
 const prisma = getPrisma(process.env.DATABASE_URL || 'DATABASE_URL')
 
@@ -8,6 +9,9 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  plugins: [
+    bearer()],
+  secret: process.env.BETTER_AUTH_SECRET as string,
   // Allow requests from the frontend development server
   trustedOrigins: ['http://localhost:3000'],
   emailAndPassword: {
