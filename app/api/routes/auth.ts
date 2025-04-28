@@ -60,11 +60,29 @@ export function registerAuthRoutes(app: AppType) {
       } else {
         const sessionToken = headers.get('set-auth-token')
         
+        const prisma = c.get('prisma')
+        const session = await auth.api.getSession({
+          headers: c.req.raw.headers
+        })
+
+        if (!session) {
+          return c.json({ error: 'Authentication required' }, 401)
+        }
+        
+        const user = await prisma.user.findUnique({
+          where: { id: session.user.id },
+        })
+      
+        if (!user) {
+          return c.json({ error: 'User not found' }, 404)
+        }
+        
         return c.json({ 
           message: 'User logged in successfully', 
-          data: { 
-            ...response, 
-            token: sessionToken
+          data: {
+            ...response,
+            role: user.role,
+            token: sessionToken,
           }
         }, 200)
       }
@@ -102,6 +120,7 @@ export function registerAuthRoutes(app: AppType) {
       name: user.name,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
+      role: user.role,
       session: {
         id: session.session.id,
         userId: session.session.userId,

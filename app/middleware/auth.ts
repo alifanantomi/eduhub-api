@@ -2,10 +2,6 @@ import { Context, Next } from 'hono'
 import { auth } from '@/app/lib/auth'
 import { UserRole } from '@prisma/client'
 
-interface AuthOptions {
-  requiredRole?: UserRole
-}
-
 export const authMiddleware = async (c: Context, next: Next) => {
   const prisma = c.get('prisma')
 

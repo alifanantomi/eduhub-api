@@ -36,7 +36,7 @@ export function registerModuleRoutes(app: AppType) {
         }
       })
       
-      return c.json({ data: { modules } })
+      return c.json({ data: modules })
     } catch (error) {
       return c.json({ error: 'Failed to fetch modules' }, 500)
     }
@@ -69,7 +69,7 @@ export function registerModuleRoutes(app: AppType) {
         return c.json({ error: 'Module not found' }, 404)
       }
       
-      return c.json({ data: { module } })
+      return c.json({ data: module })
     } catch (error) {
       return c.json({ error: 'Failed to fetch module' }, 500)
     }
@@ -109,7 +109,7 @@ export function registerModuleRoutes(app: AppType) {
         }
       })
       
-      return c.json({ data: { module } }, 201)
+      return c.json({ data: module }, 201)
     } catch (error) {
       console.log("Failed to create module:", error);
       

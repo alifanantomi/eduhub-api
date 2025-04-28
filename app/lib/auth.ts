@@ -10,7 +10,8 @@ export const auth = betterAuth({
     provider: 'postgresql',
   }),
   plugins: [
-    bearer()],
+    bearer()
+  ],
   secret: process.env.BETTER_AUTH_SECRET as string,
   // Allow requests from the frontend development server
   trustedOrigins: ['http://localhost:3000'],

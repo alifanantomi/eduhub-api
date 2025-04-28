@@ -25,7 +25,7 @@ export function registerTopicRoutes(app: AppType) {
         }
       })
       
-      return c.json({ data: { topics } })
+      return c.json({ data: topics })
     } catch (error) {
       return c.json({ error: 'Failed to fetch topics' }, 500)
     }
@@ -52,7 +52,7 @@ export function registerTopicRoutes(app: AppType) {
         return c.json({ error: 'Topic not found' }, 404)
       }
       
-      return c.json({ data: { topic } })
+      return c.json({ data: topic })
     } catch (error) {
       return c.json({ error: 'Failed to fetch topic' }, 500)
     }
@@ -71,7 +71,7 @@ export function registerTopicRoutes(app: AppType) {
         }
       })
       
-      return c.json({ data: { topic } }, 201)
+      return c.json({ data: topic }, 201)
     } catch (error) {
       return c.json({ error: 'Failed to create topic' }, 500)
     }
