@@ -3,6 +3,7 @@ import { APIError } from 'better-auth/api'
 import { auth } from '@/app/lib/auth'
 import { authMiddleware } from '@/app/middleware/auth'
 import { AppType } from '../types'
+import { getPrisma } from '@/app/lib/prisma'
 
 export function registerAuthRoutes(app: AppType) {
   // POST register a new user
@@ -59,11 +60,22 @@ export function registerAuthRoutes(app: AppType) {
         throw new Error("Error signing in user");
       } else {
         const sessionToken = headers.get('set-auth-token')
+
+        const prisma = getPrisma(process.env.DATABASE_URL || '')
+
+        const user = await prisma.user.findUnique({
+          where: { id: response.user.id },
+          select: {
+            id: true,
+            email: true,
+            role: true
+          }
+        })
         
         return c.json({ 
           message: 'User logged in successfully', 
           data: {
-            ...response,
+            ...user,
             token: sessionToken,
           }
         }, 200)
