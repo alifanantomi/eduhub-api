@@ -21,18 +21,15 @@ export function registerModuleRoutes(app: AppType) {
     try {
       const modules = await prisma.module.findMany({
         include: {
-          topics: {
-            include: {
-              topic: true
-            }
-          },
           createdBy: {
             select: {
               id: true,
               name: true,
               image: true
             }
-          }
+          },
+          createdById: false,
+          content: false
         }
       })
       

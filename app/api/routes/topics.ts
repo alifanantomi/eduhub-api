@@ -3,6 +3,7 @@ import { withRole } from '@/app/middleware/auth'
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 import { AppType } from '../types'
+import { Topic } from '@prisma/client'
 
 const topicSchema = z.object({
   name: z.string().min(1),
@@ -17,11 +18,7 @@ export function registerTopicRoutes(app: AppType) {
     try {
       const topics = await prisma.topic.findMany({
         include: {
-          modules: {
-            include: {
-              module: true
-            }
-          }
+          description: false
         }
       })
       

@@ -60,28 +60,10 @@ export function registerAuthRoutes(app: AppType) {
       } else {
         const sessionToken = headers.get('set-auth-token')
         
-        const prisma = c.get('prisma')
-        const session = await auth.api.getSession({
-          headers: c.req.raw.headers
-        })
-
-        if (!session) {
-          return c.json({ error: 'Authentication required' }, 401)
-        }
-        
-        const user = await prisma.user.findUnique({
-          where: { id: session.user.id },
-        })
-      
-        if (!user) {
-          return c.json({ error: 'User not found' }, 404)
-        }
-        
         return c.json({ 
           message: 'User logged in successfully', 
           data: {
             ...response,
-            role: user.role,
             token: sessionToken,
           }
         }, 200)
