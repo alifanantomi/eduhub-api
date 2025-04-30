@@ -58,19 +58,20 @@ export function registerTopicRoutes(app: AppType) {
   // POST create a new topic (admin only)
   app.post('/topics', withRole('ADMIN'), zValidator('json', topicSchema), async (c: Context) => {
     const prisma = c.get('prisma')
-    const { name, description } = await c.req.json()
+    const { name, description, icon } = await c.req.json()
     
     try {
       const topic = await prisma.topic.create({
         data: {
           name,
           description,
+          icon
         }
       })
       
       return c.json({ data: topic }, 201)
     } catch (error) {
-      return c.json({ error: 'Failed to create topic' }, 500)
+      return c.json({ error: `Failed to create topic: ${error}`,  }, 500)
     }
   })
   

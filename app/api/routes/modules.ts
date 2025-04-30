@@ -74,8 +74,6 @@ export function registerModuleRoutes(app: AppType) {
   
   // POST create a new module (admin only)
   app.post('/modules', withRole('ADMIN'), zValidator('json', moduleSchema), async (c) => {
-    console.log('Raw request body:', await c.req.text());
-
     const prisma = c.get('prisma')
     const user = c.get('user')
     

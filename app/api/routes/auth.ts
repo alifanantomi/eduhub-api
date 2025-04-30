@@ -68,6 +68,8 @@ export function registerAuthRoutes(app: AppType) {
           select: {
             id: true,
             email: true,
+            image: true,
+            name: true,
             role: true
           }
         })
@@ -75,7 +77,7 @@ export function registerAuthRoutes(app: AppType) {
         return c.json({ 
           message: 'User logged in successfully', 
           data: {
-            ...user,
+            user: user,
             token: sessionToken,
           }
         }, 200)
