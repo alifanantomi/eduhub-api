@@ -51,7 +51,7 @@ export function registerUserRoutes(app: AppType) {
         }
       })
       
-      return c.json({ data: { user: updatedUser } })
+      return c.json({ data: updatedUser })
     } catch (error) {
       return c.json({ error: 'Failed to update profile' }, 500)
     }

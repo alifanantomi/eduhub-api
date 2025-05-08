@@ -1,4 +1,4 @@
-import { Context, Hono, Next } from 'hono'
+import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
 import { getPrisma } from '@/app/lib/prisma'
 import { Auth, Session, User } from 'better-auth'
@@ -7,6 +7,7 @@ import { registerModuleRoutes } from '../routes/modules'
 import { registerTopicRoutes } from '../routes/topics'
 import { registerBookmarkRoutes } from '../routes/bookmarks'
 import { registerUserRoutes } from '../routes/users'
+import { registerUploadRoutes } from '../routes/upload'
 
 // Define your Hono app with the same types you already have
 const app = new Hono<{
@@ -44,6 +45,7 @@ registerModuleRoutes(app)
 registerTopicRoutes(app)
 registerBookmarkRoutes(app)
 registerUserRoutes(app)
+registerUploadRoutes(app)
 
 // Export the handlers for Next.js
 export const GET = handle(app)

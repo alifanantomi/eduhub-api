@@ -35,7 +35,7 @@ export function registerModuleRoutes(app: AppType) {
       
       return c.json({ data: modules })
     } catch (error) {
-      return c.json({ error: 'Failed to fetch modules' }, 500)
+      return c.json({ error: `Failed to fetch modules: ${error}` }, 500)
     }
   })
   
@@ -48,15 +48,12 @@ export function registerModuleRoutes(app: AppType) {
       const module = await prisma.module.findUnique({
         where: { id },
         include: {
-          topics: {
-            include: {
-              topic: true
-            }
-          },
+          createdById: false,
           createdBy: {
             select: {
               id: true,
-              name: true
+              name: true,
+              image: true
             }
           }
         }
@@ -99,6 +96,13 @@ export function registerModuleRoutes(app: AppType) {
           topics: {
             include: {
               topic: true
+            }
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+              image: true
             }
           }
         }

@@ -14,9 +14,14 @@ export function registerBookmarkRoutes(app: AppType) {
         include: {
           module: {
             include: {
-              topics: {
-                include: {
-                  topic: true
+              topics: false,
+              createdById: false,
+              content: false,
+              createdBy: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true
                 }
               }
             }
@@ -24,9 +29,9 @@ export function registerBookmarkRoutes(app: AppType) {
         }
       })
       
-      return c.json({ data: { bookmarks } })
+      return c.json({ data: bookmarks })
     } catch (error) {
-      return c.json({ error: 'Failed to fetch bookmarks' }, 500)
+      return c.json({ error: `Failed to fetch bookmarks ${error}` }, 500)
     }
   })
   
@@ -47,13 +52,18 @@ export function registerBookmarkRoutes(app: AppType) {
           moduleId
         },
         include: {
-          module: true
+          module: {
+            include: {
+              createdById: false,
+              content: false
+            }
+          }
         }
       })
       
-      return c.json({ data: { bookmark } }, 201)
+      return c.json({ data: bookmark }, 201)
     } catch (error) {
-      return c.json({ error: 'Failed to create bookmark' }, 500)
+      return c.json({ error: `Failed to create bookmark: ${error}`  }, 500)
     }
   })
   

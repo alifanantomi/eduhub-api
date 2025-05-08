@@ -1,9 +1,8 @@
 import { Context } from 'hono'
-import { withRole } from '@/app/middleware/auth'
+import { authMiddleware, withRole } from '@/app/middleware/auth'
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 import { AppType } from '../types'
-import { Topic } from '@prisma/client'
 
 const topicSchema = z.object({
   name: z.string().min(1),
@@ -12,7 +11,7 @@ const topicSchema = z.object({
 
 export function registerTopicRoutes(app: AppType) {
   // GET all topics
-  app.get('/topics', async (c: Context) => {
+  app.get('/topics', authMiddleware, async (c: Context) => {
     const prisma = c.get('prisma')
     
     try {
