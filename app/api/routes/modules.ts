@@ -3,6 +3,7 @@ import { withRole } from '@/app/middleware/auth'
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 import { AppType } from '../types'
+import { estimateReadingTime } from '@/app/lib/readingTime'
 
 // Module validation schema
 const moduleSchema = z.object({
@@ -75,6 +76,8 @@ export function registerModuleRoutes(app: AppType) {
     const user = c.get('user')
     
     const { title, image, summary, content, topicIds } = await c.req.json()
+
+    const readingTime = estimateReadingTime(content)
     
     try {
       const module = await prisma.module.create({
@@ -83,6 +86,7 @@ export function registerModuleRoutes(app: AppType) {
           image,
           summary,
           content,
+          readTime: readingTime,
           createdById: user.id,
           topics: topicIds ? {
             create: topicIds.map((topicId: any) => ({

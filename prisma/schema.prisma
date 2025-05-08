@@ -28,9 +28,10 @@ model Topic {
 model Module {
   id          String          @id @default(uuid())
   title       String
-  image       String? // URL to the image
+  image       String?
   summary     String
   content     String          @db.Text
+  readTime    Int?            @default(0)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   createdById String

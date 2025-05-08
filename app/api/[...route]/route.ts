@@ -34,7 +34,7 @@ app.use('*', async (c, next) => {
   }
 
   const prisma = getPrisma(process.env.DATABASE_URL || '')
-  
+
   c.set('prisma', prisma)
   await next()
 })
